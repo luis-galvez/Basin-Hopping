@@ -39,6 +39,7 @@ different categories for the user to fill in with data regarding the problem to 
           temperature_K = //Temperature in Kelvin. Eg. 500
           step_width = //Step width tu use for the basin hopping algorithm. Eg. 0.6
           iterations = //Total number of iterations, or steps in the basin hopping execution. Eg. 100
+          swap_atoms = //Swap atoms in bimetallic clusters? (Default: True)
 
 3. Random range: This category deals with specifying the 3D space available for generating the initial randomized cluster.
 
