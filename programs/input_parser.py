@@ -61,5 +61,11 @@ def get_atoms_quantity_list(lst):
     return [int(e) for e in lst if is_number(e)]
 
 
-# print(get_output_name("[Pt:5], [Au:10]"))
-# print(get_nAtoms_str("[Pt:5], [Au:10]"))
+# Function to convert string boolean values to boolean values
+def str_to_bool(strvalue):
+    if strvalue.lower() == "true":
+        return True
+    elif strvalue.lower() == "false":
+        return False
+    else:
+        raise ValueError(f"Cannot covert {strvalue} to a boolean.")
