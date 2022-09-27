@@ -26,7 +26,9 @@ import random
 import re
 import sys
 import datetime
-from subprocess import*
+from subprocess import *
+
+from input_parser import *
 
 # Variable declarations
 init = ""
@@ -38,6 +40,7 @@ cluster_ntyp = ""
 temperature_K = 0
 step_width = ""
 iterations = ""
+swap_atoms = True
 x_range = ""
 y_range = ""
 z_range = ""
@@ -74,6 +77,8 @@ for line in lines:
 		step_width = l.split("step_width = ", 1)[1]
 	if l.startswith("iterations"):
 		iterations = int(l.split("iterations = ", 1)[1])
+	if l.startswith("swap"):
+		swap_atoms = str_to_bool(l.split("swap = ", 1)[1])
 	if l.startswith("x_range"):
 		x_range = l.split("x_range = ", 1)[1]
 	if l.startswith("y_range"):
@@ -85,7 +90,6 @@ for line in lines:
 
 sys.path.append(programs_dir)
 
-from input_parser import*
 # Cluster total number of atoms
 cluster_nat = str(get_nAtoms_str(cluster_ntyp))
 
@@ -162,7 +166,7 @@ i = 1
 swap_fail_flag = False
 while i < iterations:
 	# Every 10th iteration a swap routine gets executed
-	if i%10 == 0 and swap_fail_flag == False:
+	if i%10 == 0 and swap_fail_flag == False and swap_atoms:
 		call(['python3.4', programs_dir + '/swap.py', output_dir_name + '/coord' + str(i) + '.xyz', output_dir_name + '/input.in', cluster_ntyp])
 	else:
 		swap_fail_flag = False
@@ -216,7 +220,7 @@ while i < iterations:
 		call(['rm', '-r', output_dir_name + '/input' + str(i + 1) + '.in', output_dir_name + '/output' + str(i + 1) + '.out', output_dir_name + '/coord' + str(i + 1) + '.xyz'])
 		print("Iteration " + str(i + 1) + " failed!. Starting again from previous configuration + random moves ! ")
 		# Every 10th iteration swap gets involved
-		if i%10 == 0:
+		if i%10 == 0 and swap_atoms:
 			print(" --> Swap failed to converge.")
 			swap_fail_flag = True
 
